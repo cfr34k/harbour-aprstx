@@ -31,10 +31,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Transmitter On</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Longitude: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -55,11 +51,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Waiting for next transmission</source>
+        <source>Unknown state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown state</source>
+        <source>Enable automatic transmitter</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

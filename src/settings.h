@@ -10,6 +10,7 @@ class Settings : public QObject
 
 	Q_PROPERTY(QString userCall READ getUserCall WRITE setUserCall NOTIFY userCallChanged)
 	Q_PROPERTY(QString comment READ getComment WRITE setComment NOTIFY commentChanged)
+	Q_PROPERTY(unsigned int autoTxInterval READ getAutoTxInterval WRITE setAutoTxInterval NOTIFY autoTxIntervalChanged)
 
 private:
 	QSettings *m_settings;
@@ -27,6 +28,7 @@ public:
 
 	QString getUserCall(void) { return m_settings->value("UserCall", "").toString(); }
 	QString getComment(void) { return m_settings->value("Comment", "").toString(); }
+	unsigned int getAutoTxInterval(void) { return m_settings->value("AutoTxInterval", 60).toUInt(); }
 
 public slots:
 	void setUserCall(const QString &call)
@@ -41,9 +43,16 @@ public slots:
 		emit commentChanged(comment);
 	}
 
+	void setAutoTxInterval(unsigned int interval)
+	{
+		m_settings->setValue("AutoTxInterval", interval);
+		emit autoTxIntervalChanged(interval);
+	}
+
 signals:
 	void userCallChanged(const QString &newCall);
 	void commentChanged(const QString &newComment);
+	void autoTxIntervalChanged(unsigned int interval);
 };
 
 #endif // SETTINGS_H

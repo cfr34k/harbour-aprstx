@@ -37,20 +37,30 @@ import APRSTypes 1.0
 Page {
 	id: page
 
-	function decodeTXState(state)
+	function decodeTXState(state, secondsToTx)
 	{
 		switch(state) {
 		case APRSCtrlTypes.Disabled:
 			return qsTr("Transmitter disabled");
 
 		case APRSCtrlTypes.Transmitting:
-			return qsTr("Transmitting");
+			return '<span style="color: red">' + qsTr("Transmitting") + '</span>';
 
 		case APRSCtrlTypes.Waiting:
-			return qsTr("Waiting for next transmission");
+			return qsTr("Waiting for next transmission (" + secondsToTx + " s)");
 
 		default:
 			return qsTr("Unknown state");
+		}
+	}
+
+	function colorFromTxState(state)
+	{
+		switch(state) {
+		case APRSCtrlTypes.Transmitting:
+			return "red";
+		default:
+			return Theme.highlightColor;
 		}
 	}
 
@@ -89,7 +99,8 @@ Page {
 			}
 
 			Label {
-				text: decodeTXState(aprsctrl.txstate)
+				text: decodeTXState(aprsctrl.txstate, aprsctrl.secondsToAutoTx)
+				color: colorFromTxState(aprsctrl.txstate)
 				//color: Theme.secondaryHighlightColor
 				anchors.horizontalCenter: parent.horizontalCenter
 				//font.pixelSize: Theme.fontSizeLarge
@@ -129,7 +140,8 @@ Page {
 			}
 
 			TextSwitch {
-				text: qsTr("Transmitter On")
+				text: qsTr("Enable automatic transmitter")
+				onCheckedChanged: { if(checked) { aprsctrl.auto_tx_start() } else { aprsctrl.auto_tx_stop() } }
 			}
 		}
 	}

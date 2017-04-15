@@ -6,12 +6,21 @@
 
 #include "settings.h"
 
-APRSCtrl::APRSCtrl(QObject *parent) : QObject(parent)
+APRSCtrl::APRSCtrl(QObject *parent)
+	: QObject(parent),
+		m_txState(APRSCtrl::Disabled)
 {
 	m_aprs = new APRS();
 	m_afsk = new AFSKMod(12000);
 
 	m_sampleIO = new QBuffer();
+
+	m_autoTxTimer = new QTimer();
+	m_autoTxTimer->setInterval(1000);
+
+	connect(m_autoTxTimer, SIGNAL(timeout()), this, SLOT(auto_tx_tick()));
+
+	connect(&(Settings::instance()), SIGNAL(autoTxIntervalChanged(uint)), this, SLOT(set_seconds_to_auto_tx(uint)));
 
 	m_aprs->set_source(Settings::instance().getUserCall().toUtf8().data(), 0);
 	m_aprs->set_dest("GPS", 0);
@@ -46,10 +55,35 @@ APRSCtrl::APRSCtrl(QObject *parent) : QObject(parent)
 
 APRSCtrl::~APRSCtrl()
 {
+	delete m_autoTxTimer;
+
 	delete m_audioOutput;
+	delete m_sampleIO;
 
 	delete m_aprs;
 	delete m_afsk;
+}
+
+void APRSCtrl::auto_tx_start(void)
+{
+	set_seconds_to_auto_tx(Settings::instance().getAutoTxInterval());
+	set_tx_state(Waiting);
+	m_autoTxTimer->start();
+}
+
+void APRSCtrl::auto_tx_stop(void)
+{
+	m_autoTxTimer->stop();
+	set_tx_state(Disabled);
+}
+
+void APRSCtrl::auto_tx_tick()
+{
+	set_seconds_to_auto_tx(m_secondsToAutoTx-1);
+
+	if(m_secondsToAutoTx == 0) {
+		transmit_packet();
+	}
 }
 
 void APRSCtrl::audio_state_changed(QAudio::State state)
@@ -60,7 +94,12 @@ void APRSCtrl::audio_state_changed(QAudio::State state)
 		break;
 
 	case QAudio::StoppedState:
-		set_tx_state(Disabled);
+		if(m_autoTxTimer->isActive()) {
+			set_seconds_to_auto_tx(Settings::instance().getAutoTxInterval());
+			set_tx_state(Waiting);
+		} else {
+			set_tx_state(Disabled);
+		}
 		m_sampleIO->close();
 		break;
 
