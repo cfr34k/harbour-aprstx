@@ -80,7 +80,9 @@ APRSCtrl::~APRSCtrl()
 
 void APRSCtrl::auto_tx_start(void)
 {
-	set_seconds_to_auto_tx(Settings::instance().getAutoTxInterval());
+	m_nextTx = time(NULL) + Settings::instance().getAutoTxInterval();
+	emit seconds_to_auto_tx_changed(m_nextTx - time(NULL));
+
 	set_tx_state(Waiting);
 	m_autoTxTimer->start();
 }
@@ -93,9 +95,9 @@ void APRSCtrl::auto_tx_stop(void)
 
 void APRSCtrl::auto_tx_tick()
 {
-	set_seconds_to_auto_tx(m_secondsToAutoTx-1);
+	emit seconds_to_auto_tx_changed(m_nextTx - time(NULL));
 
-	if(m_secondsToAutoTx == 0) {
+	if(m_txState == Waiting && time(NULL) > m_nextTx) {
 		transmit_packet();
 	}
 }
@@ -109,7 +111,8 @@ void APRSCtrl::audio_state_changed(QAudio::State state)
 
 	case QAudio::StoppedState:
 		if(m_autoTxTimer->isActive()) {
-			set_seconds_to_auto_tx(Settings::instance().getAutoTxInterval());
+			m_nextTx = time(NULL) + Settings::instance().getAutoTxInterval();
+			emit seconds_to_auto_tx_changed(m_nextTx - time(NULL));
 			set_tx_state(Waiting);
 		} else {
 			set_tx_state(Disabled);

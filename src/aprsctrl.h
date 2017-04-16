@@ -10,6 +10,8 @@
 #include <QGeoPositionInfo>
 #include <QGeoPositionInfoSource>
 
+#include <time.h>
+
 #include "aprs.h"
 #include "afskmod.h"
 
@@ -20,8 +22,7 @@ class APRSCtrl : public QObject
 	Q_OBJECT
 
 	Q_PROPERTY(TXState txstate READ get_tx_state WRITE set_tx_state NOTIFY tx_state_changed)
-	Q_PROPERTY(unsigned int secondsToAutoTx READ get_seconds_to_auto_tx WRITE set_seconds_to_auto_tx NOTIFY seconds_to_auto_tx_changed)
-
+	Q_PROPERTY(unsigned int secondsToAutoTx READ get_seconds_to_auto_tx NOTIFY seconds_to_auto_tx_changed)
 
 	Q_PROPERTY(qreal latitude  READ get_latitude  NOTIFY latitudeChanged)
 	Q_PROPERTY(qreal longitude READ get_longitude NOTIFY longitudeChanged)
@@ -41,7 +42,7 @@ private:
 	AFSKMod *m_afsk;
 
 	QTimer *m_autoTxTimer;
-	unsigned int m_secondsToAutoTx;
+	time_t m_nextTx;
 
 	QAudioOutput *m_audioOutput;
 
@@ -63,7 +64,7 @@ public:
 	~APRSCtrl();
 
 	TXState get_tx_state() { return m_txState; }
-	unsigned int get_seconds_to_auto_tx() { return m_secondsToAutoTx; }
+	unsigned int get_seconds_to_auto_tx() { return m_nextTx - time(NULL); }
 
 	qreal get_latitude() { return m_latitude; }
 	qreal get_longitude() { return m_longitude; }
@@ -87,8 +88,6 @@ private slots:
 
 public slots:
 	void transmit_packet(void);
-
-	void set_seconds_to_auto_tx(unsigned int seconds) { m_secondsToAutoTx = seconds; emit seconds_to_auto_tx_changed(seconds); }
 
 	void updateUserCall(const QString &call);
 	void updateUserSSID(uint ssid);
