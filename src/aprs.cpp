@@ -6,6 +6,23 @@
 
 #include "aprs.h"
 
+const struct APRS::APRS_ICON_DATA APRS::ICON_DATA[APRS_NUM_ICONS] = {
+	{ '.' }, // AI_X
+	{ 'b' }, // AI_BIKE
+	{ '>' }, // AI_CAR
+	{ 'j' }, // AI_JEEP
+	{ 'v' }, // AI_VAN
+	{ 'k' }, // AI_TRUCK
+	{ 'U' }, // AI_BUS
+	{ 'O' }, // AI_BALLOON
+	{ 'R' }, // AI_RECREATIONAL_VEHICLE
+	{ 'X' }, // AI_HELICOPTER
+	{ 'Y' }, // AI_YACHT
+	{ 'a' }, // AI_AMBULANCE
+	{ 'f' }, // AI_FIRE_TRUCK
+	{ 's' }, // AI_SHIP
+};
+
 // PRIVATE FUNCTIONS
 
 void APRS::import_ascii(uint8_t *out, char *in, size_t n)
@@ -69,6 +86,62 @@ void APRS::append_address(uint8_t **frameptr, struct APRS_ADDR *addr, uint8_t is
 	*frameptr += 7;
 }
 
+void APRS::update_info_field(void)
+{
+	float lat = m_lat;
+	float lon = m_lon;
+
+	char lat_ns, lon_ew;
+	int lat_deg, lon_deg;
+	float lat_min, lon_min;
+
+	float alt_ft;
+
+	struct tm tms;
+
+	// convert sign -> north/south, east/west
+	if(lat < 0) {
+		lat = -lat;
+		lat_ns = 'S';
+	} else {
+		lat_ns = 'N';
+	}
+
+	if(lon < 0) {
+		lon = -lon;
+		lon_ew = 'W';
+	} else {
+		lon_ew = 'E';
+	}
+
+	// calculate integer degrees
+	lat_deg = (int)lat;
+	lon_deg = (int)lon;
+
+	// calculate fractional arc minutes
+	lat_min = ((lat - lat_deg) * 60);
+	lon_min = ((lon - lon_deg) * 60);
+
+	// convert meters to feet
+	alt_ft = m_alt_m / 0.3048;
+
+	// generate time string from timestamp
+	gmtime_r(&m_time, &tms);
+
+	// make sure decimals are separated by '.'
+	setlocale(LC_ALL, "C");
+
+	sprintf((char*)m_info, "/%02i%02i%02iz%02i%05.2f%c/%03i%05.2f%c%c%s /a=%06i",
+			tms.tm_mday, tms.tm_hour, tms.tm_min,
+			lat_deg, lat_min, lat_ns,
+			lon_deg, lon_min, lon_ew,
+			ICON_DATA[m_icon].aprs_char, m_comment,
+			(int)alt_ft);
+
+	// back to internationality
+	setlocale(LC_ALL, "");
+}
+
 // PUBLIC FUNCTIONS
 
 APRS::APRS()
@@ -124,55 +197,10 @@ uint8_t APRS::add_path(const char *call, uint8_t ssid)
 
 void APRS::update_pos_time(float lat, float lon, float alt_m, time_t t)
 {
-	char lat_ns, lon_ew;
-	int lat_deg, lon_deg;
-	float lat_min, lon_min;
-
-	float alt_ft;
-
-	struct tm tms;
-
-	// convert sign -> north/south, east/west
-	if(lat < 0) {
-		lat = -lat;
-		lat_ns = 'S';
-	} else {
-		lat_ns = 'N';
-	}
-
-	if(lon < 0) {
-		lon = -lon;
-		lon_ew = 'W';
-	} else {
-		lon_ew = 'E';
-	}
-
-	// calculate integer degrees
-	lat_deg = (int)lat;
-	lon_deg = (int)lon;
-
-	// calculate fractional arc minutes
-	lat_min = ((lat - lat_deg) * 60);
-	lon_min = ((lon - lon_deg) * 60);
-
-	// convert meters to feet
-	alt_ft = alt_m / 0.3048;
-
-	// generate time string from timestamp
-	gmtime_r(&t, &tms);
-
-	// make sure decimals are separated by '.'
-	setlocale(LC_ALL, "C");
-
-	sprintf((char*)m_info, "/%02i%02i%02iz%02i%05.2f%c/%03i%05.2f%c%c%s /a=%06i",
-		 	tms.tm_mday, tms.tm_hour, tms.tm_min,
-			lat_deg, lat_min, lat_ns,
-			lon_deg, lon_min, lon_ew,
-			(char)m_icon, m_comment,
-			(int)alt_ft);
-
-	// back to internationality
-	setlocale(LC_ALL, "");
+	m_lat = lat;
+	m_lon = lon;
+	m_alt_m = alt_m;
+	m_time = t;
 }
 
 void APRS::set_icon(enum APRS_ICON icon)
@@ -200,6 +228,8 @@ size_t APRS::build_frame(uint8_t *frame)
 
 	*(frameptr++) = m_type;
 	*(frameptr++) = m_protocol;
+
+	update_info_field();
 
 	while(*infoptr != '\0') {
 		*frameptr = *infoptr;

@@ -40,10 +40,12 @@ Dialog {
 
 	onAccepted: {
 		settings.userCall = userCall.text;
+		settings.userSSID = userSSID.text;
 		settings.comment = comment.text;
 		settings.autoTxInterval = autoTxInterval.text;
 		settings.voxToneDuration = voxTone.text;
 		settings.tailFlags = tailFlags.text;
+		settings.iconIndex = icon.currentIndex
 	}
 
 	SilicaFlickable {
@@ -70,6 +72,39 @@ Dialog {
 				text: settings.userCall
 				label: qsTr("Your call sign")
 				placeholderText: label
+			}
+
+			TextField {
+				id: userSSID
+				width: parent.width
+				text: settings.userSSID
+				label: qsTr("Source SSID (0-15, incl.)")
+				inputMethodHints: Qt.ImhDigitsOnly
+				placeholderText: label
+				validator: IntValidator {bottom: 0; top: 15}
+			}
+
+			ComboBox {
+				id: icon
+				currentIndex: settings.iconIndex
+				label: qsTr("Icon")
+				menu: ContextMenu {
+					/* Keep this list in sync with aprs.h! */
+					MenuItem { text: qsTr("X") }
+					MenuItem { text: qsTr("Bicycle") }
+					MenuItem { text: qsTr("Car") }
+					MenuItem { text: qsTr("Jeep") }
+					MenuItem { text: qsTr("Van") }
+					MenuItem { text: qsTr("Truck") }
+					MenuItem { text: qsTr("Bus") }
+					MenuItem { text: qsTr("Balloon") }
+					MenuItem { text: qsTr("Recreational Vehicle") }
+					MenuItem { text: qsTr("Helicopter") }
+					MenuItem { text: qsTr("Yacht") }
+					MenuItem { text: qsTr("Ambulance") }
+					MenuItem { text: qsTr("Fire Truck") }
+					MenuItem { text: qsTr("Ship") }
+				}
 			}
 
 			TextField {

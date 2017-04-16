@@ -10,8 +10,22 @@ class APRS {
 public:
 
 	enum APRS_ICON {
-		AI_X = '.',
-		AI_BIKE = 'b'
+		AI_X = 0,
+		AI_BIKE,
+		AI_CAR,
+		AI_JEEP,
+		AI_VAN,
+		AI_TRUCK,
+		AI_BUS,
+		AI_BALLOON,
+		AI_RECREATIONAL_VEHICLE,
+		AI_HELICOPTER,
+		AI_YACHT,
+		AI_AMBULANCE,
+		AI_FIRE_TRUCK,
+		AI_SHIP,
+
+		APRS_NUM_ICONS
 	};
 
 private:
@@ -19,6 +33,17 @@ private:
 		char call[7]; // 6 characters + \0
 		uint8_t ssid;
 	};
+
+	struct APRS_ICON_DATA {
+		char aprs_char;
+	};
+
+	static const struct APRS_ICON_DATA ICON_DATA[APRS_NUM_ICONS];
+
+	float m_lat;
+	float m_lon;
+	float m_alt_m;
+	time_t m_time;
 
 	struct APRS_ADDR m_dest;
 	struct APRS_ADDR m_src;
@@ -37,6 +62,8 @@ private:
 	void import_ascii(uint8_t *out, char *in, size_t n);
 	uint16_t calculate_fcs(uint8_t *data, size_t len);
 	void append_address(uint8_t **frameptr, struct APRS_ADDR *addr, uint8_t is_last);
+
+	void update_info_field(void);
 
 public:
 	APRS();

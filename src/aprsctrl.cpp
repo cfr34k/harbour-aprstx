@@ -28,9 +28,13 @@ APRSCtrl::APRSCtrl(QObject *parent)
 		m_positionSource->startUpdates();
 	}
 
+	connect(&(Settings::instance()), SIGNAL(userCallChanged(QString)), this, SLOT(updateUserCall(QString)));
+	connect(&(Settings::instance()), SIGNAL(userSSIDChanged(uint)), this, SLOT(updateUserSSID(uint)));
+	connect(&(Settings::instance()), SIGNAL(commentChanged(QString)), this, SLOT(updateComment(QString)));
+	connect(&(Settings::instance()), SIGNAL(iconIndexChanged(uint)), this, SLOT(updateIconIndex(uint)));
 	connect(&(Settings::instance()), SIGNAL(autoTxIntervalChanged(uint)), this, SLOT(set_seconds_to_auto_tx(uint)));
 
-	m_aprs->set_source(Settings::instance().getUserCall().toUtf8().data(), 0);
+	m_aprs->set_source(Settings::instance().getUserCall().toUtf8().data(), Settings::instance().getUserSSID());
 	m_aprs->set_dest("GPS", 0);
 
 	m_aprs->add_path("WIDE1", 1);
@@ -38,7 +42,7 @@ APRSCtrl::APRSCtrl(QObject *parent)
 
 	m_aprs->set_comment(Settings::instance().getComment().toUtf8().data());
 
-	m_aprs->set_icon(APRS::AI_BIKE);
+	m_aprs->set_icon(static_cast<APRS::APRS_ICON>(Settings::instance().getIconIndex()));
 
 	m_aprs->update_pos_time(49.58659, 11.01217, 300, time(NULL));
 
@@ -200,4 +204,28 @@ void APRSCtrl::positionUpdated(const QGeoPositionInfo &posInfo)
 	emit altitudeChanged(m_altitude);
 
 	m_aprs->update_pos_time(m_latitude, m_longitude, m_altitude, time(NULL));
+}
+
+void APRSCtrl::updateUserCall(const QString &call)
+{
+	qDebug() << "Call changed: " << call;
+	m_aprs->set_source(call.toUtf8().data(), Settings::instance().getUserSSID());
+}
+
+void APRSCtrl::updateUserSSID(uint ssid)
+{
+	qDebug() << "SSID changed: " << ssid;
+	m_aprs->set_source(Settings::instance().getUserCall().toUtf8().data(), ssid);
+}
+
+void APRSCtrl::updateComment(const QString &comment)
+{
+	qDebug() << "Comment changed: " << comment;
+	m_aprs->set_comment(comment.toUtf8().data());
+}
+
+void APRSCtrl::updateIconIndex(uint index)
+{
+	qDebug() << "Icon index changed: " << index;
+	m_aprs->set_icon(static_cast<APRS::APRS_ICON>(index));
 }

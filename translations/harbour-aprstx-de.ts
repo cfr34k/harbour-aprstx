@@ -66,7 +66,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>APRS Fields</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Your call sign</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source SSID (0-15, incl.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -74,7 +86,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>APRS Fields</source>
+        <source>Operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto TX interval (seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -90,11 +106,59 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Operation</source>
+        <source>X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Auto TX interval (seconds)</source>
+        <source>Bicycle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Car</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Jeep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Van</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Truck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Balloon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recreational Vehicle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Helicopter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yacht</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ambulance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fire Truck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ship</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

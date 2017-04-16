@@ -89,6 +89,11 @@ public slots:
 	void transmit_packet(void);
 
 	void set_seconds_to_auto_tx(unsigned int seconds) { m_secondsToAutoTx = seconds; emit seconds_to_auto_tx_changed(seconds); }
+
+	void updateUserCall(const QString &call);
+	void updateUserSSID(uint ssid);
+	void updateComment(const QString &comment);
+	void updateIconIndex(uint index);
 };
 
 #endif // APRSCTRL_H
