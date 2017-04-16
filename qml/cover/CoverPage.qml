@@ -31,23 +31,50 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
+import APRSTypes 1.0
+
 CoverBackground {
-    Label {
-        id: label
-        anchors.centerIn: parent
-        text: qsTr("My Cover")
-    }
+	function decodeTXState(state, secondsToTx)
+	{
+		switch(state) {
+		case APRSCtrlTypes.Disabled:
+			return qsTr("Disabled");
 
-    CoverActionList {
-        id: coverAction
+		case APRSCtrlTypes.Transmitting:
+			return qsTr("Transmitting");
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-next"
-        }
+		case APRSCtrlTypes.Waiting:
+			return qsTr("Waiting (" + secondsToTx + " s)");
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-pause"
-        }
-    }
+		default:
+			return qsTr("Unknown");
+		}
+	}
+
+	function colorFromTxState(state)
+	{
+		switch(state) {
+		case APRSCtrlTypes.Transmitting:
+			return "red";
+		default:
+			return Theme.highlightColor;
+		}
+	}
+
+	Label {
+		id: status
+		anchors.centerIn: parent
+		text: decodeTXState(aprsctrl.txstate, aprsctrl.secondsToAutoTx)
+		color: colorFromTxState(aprsctrl.txstate)
+	}
+
+	CoverActionList {
+		id: coverAction
+
+		CoverAction {
+			onTriggered: aprsctrl.transmit_packet()
+			iconSource: "image://theme/icon-cover-next"
+		}
+	}
 }
 

@@ -43,7 +43,7 @@ Page {
 			return qsTr("Transmitter disabled");
 
 		case APRSCtrlTypes.Transmitting:
-			return '<span style="color: red">' + qsTr("Transmitting") + '</span>';
+			return qsTr("Transmitting");
 
 		case APRSCtrlTypes.Waiting:
 			return qsTr("Waiting for next transmission (" + secondsToTx + " s)");
