@@ -33,7 +33,6 @@ import Sailfish.Silica 1.0
 
 import APRSTypes 1.0
 
-
 Page {
 	id: page
 
@@ -62,6 +61,33 @@ Page {
 		default:
 			return Theme.highlightColor;
 		}
+	}
+
+	function formatCoordinate(n, isLon) {
+		var coordText = "";
+
+		var absn = Math.abs(n);
+		var deg = Math.floor(absn);
+		var min = ((Math.floor(absn * 6000) % 6000) / 100).toFixed(2);
+
+		coordText  = deg + "° ";
+		coordText += min + "' ";
+
+		if(isLon) { // longitude: east/west
+			if(n >= 0) {
+				coordText += "E";
+			} else {
+				coordText += "W";
+			}
+		} else { // latitude: north/south
+			if(n >= 0) {
+				coordText += "N";
+			} else {
+				coordText += "S";
+			}
+		}
+
+		return '<b>' + coordText + '</b>';
 	}
 
 	// The effective value will be restricted by ApplicationWindow.allowedOrientations
@@ -111,7 +137,7 @@ Page {
 				font.pixelSize: Theme.fontSizeLarge
 				anchors.right: parent.right
 				anchors.rightMargin: Theme.paddingLarge
-				text: qsTr('Latitude: ') //+ page.formatCoordinate(positionsensor.latitude, false)
+				text: qsTr('Latitude: ') + page.formatCoordinate(aprsctrl.latitude, false)
 			}
 
 			Label {
@@ -119,7 +145,7 @@ Page {
 				font.pixelSize: Theme.fontSizeLarge
 				anchors.right: parent.right
 				anchors.rightMargin: Theme.paddingLarge
-				text: qsTr('Longitude: ') //+ page.formatCoordinate(positionsensor.latitude, false)
+				text: qsTr('Longitude: ') + page.formatCoordinate(aprsctrl.longitude, true)
 			}
 
 			Label {
@@ -127,7 +153,7 @@ Page {
 				font.pixelSize: Theme.fontSizeLarge
 				anchors.right: parent.right
 				anchors.rightMargin: Theme.paddingLarge
-				text: qsTr('Altitude: ') //+ page.formatCoordinate(positionsensor.latitude, false)
+				text: qsTr('Altitude: ') + '<b>' + aprsctrl.altitude + ' m</b>'
 			}
 
 			SectionHeader {
@@ -137,6 +163,8 @@ Page {
 			Button {
 				text: qsTr("Transmit now!")
 				onClicked: aprsctrl.transmit_packet()
+				anchors.horizontalCenter: parent.horizontalCenter
+				enabled: aprsctrl.txstate != APRSCtrlTypes.Transmitting
 			}
 
 			TextSwitch {
@@ -146,4 +174,3 @@ Page {
 		}
 	}
 }
-

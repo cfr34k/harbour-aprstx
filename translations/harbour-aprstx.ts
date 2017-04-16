@@ -66,15 +66,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>APRS Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Your call sign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>APRS comment (max. 32 characters)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>APRS Fields</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Modulation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>VOX tone duration (milliseconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tail flags (after end of packet)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto TX interval (seconds)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -14,7 +14,7 @@ TARGET = harbour-aprstx
 
 CONFIG += sailfishapp
 
-QT += multimedia
+QT += multimedia positioning
 
 SOURCES += src/harbour-aprstx.cpp \
     src/settings.cpp \

@@ -41,36 +41,82 @@ Dialog {
 	onAccepted: {
 		settings.userCall = userCall.text;
 		settings.comment = comment.text;
+		settings.autoTxInterval = autoTxInterval.text;
+		settings.voxToneDuration = voxTone.text;
+		settings.tailFlags = tailFlags.text;
 	}
 
-	Column {
-		id: column
+	SilicaFlickable {
+		anchors.fill: parent
+		contentHeight: column.height
 
-		width: dialog.width
-		spacing: Theme.paddingLarge
+		Column {
+			id: column
 
-		DialogHeader {
-			acceptText: qsTr("Save")
-		}
+			width: dialog.width
+			spacing: Theme.paddingLarge
 
-		SectionHeader {
-			text: qsTr("APRS Settings")
-		}
+			DialogHeader {
+				acceptText: qsTr("Save")
+			}
 
-		TextField {
-			id: userCall
-			width: parent.width
-			text: settings.userCall
-			label: qsTr("Your call sign")
-			placeholderText: label
-		}
+			SectionHeader {
+				text: qsTr("APRS Fields")
+			}
 
-		TextField {
-			id: comment
-			width: parent.width
-			text: settings.comment
-			label: qsTr("APRS comment (max. 32 characters)")
-			placeholderText: label
+			TextField {
+				id: userCall
+				width: parent.width
+				text: settings.userCall
+				label: qsTr("Your call sign")
+				placeholderText: label
+			}
+
+			TextField {
+				id: comment
+				width: parent.width
+				text: settings.comment
+				label: qsTr("APRS comment (max. 32 characters)")
+				placeholderText: label
+			}
+
+			SectionHeader {
+				text: qsTr("Operation")
+			}
+
+			TextField {
+				id: autoTxInterval
+				width: parent.width
+				text: settings.autoTxInterval
+				label: qsTr("Auto TX interval (seconds)")
+				inputMethodHints: Qt.ImhDigitsOnly
+				placeholderText: label
+				validator: IntValidator {bottom: 1}
+			}
+
+			SectionHeader {
+				text: qsTr("Modulation")
+			}
+
+			TextField {
+				id: voxTone
+				width: parent.width
+				text: settings.voxToneDuration
+				label: qsTr("VOX tone duration (milliseconds)")
+				inputMethodHints: Qt.ImhDigitsOnly
+				placeholderText: label
+				validator: IntValidator {bottom: 0}
+			}
+
+			TextField {
+				id: tailFlags
+				width: parent.width
+				text: settings.tailFlags
+				label: qsTr("Tail flags (after end of packet)")
+				inputMethodHints: Qt.ImhDigitsOnly
+				placeholderText: label
+				validator: IntValidator {bottom: 0}
+			}
 		}
 	}
 }

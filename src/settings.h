@@ -10,7 +10,9 @@ class Settings : public QObject
 
 	Q_PROPERTY(QString userCall READ getUserCall WRITE setUserCall NOTIFY userCallChanged)
 	Q_PROPERTY(QString comment READ getComment WRITE setComment NOTIFY commentChanged)
-	Q_PROPERTY(unsigned int autoTxInterval READ getAutoTxInterval WRITE setAutoTxInterval NOTIFY autoTxIntervalChanged)
+	Q_PROPERTY(uint autoTxInterval READ getAutoTxInterval WRITE setAutoTxInterval NOTIFY autoTxIntervalChanged)
+	Q_PROPERTY(uint voxToneDuration READ getVoxToneDuration WRITE setVoxToneDuration NOTIFY voxToneDurationChanged)
+	Q_PROPERTY(uint tailFlags READ getTailFlags WRITE setTailFlags NOTIFY tailFlagsChanged)
 
 private:
 	QSettings *m_settings;
@@ -28,7 +30,9 @@ public:
 
 	QString getUserCall(void) { return m_settings->value("UserCall", "").toString(); }
 	QString getComment(void) { return m_settings->value("Comment", "").toString(); }
-	unsigned int getAutoTxInterval(void) { return m_settings->value("AutoTxInterval", 60).toUInt(); }
+	uint getAutoTxInterval(void) { return m_settings->value("AutoTxInterval", 60).toUInt(); }
+	uint getVoxToneDuration(void) { return m_settings->value("VoxToneDuration", 100).toUInt(); }
+	uint getTailFlags(void) { return m_settings->value("TailFlags", 20).toUInt(); }
 
 public slots:
 	void setUserCall(const QString &call)
@@ -43,16 +47,30 @@ public slots:
 		emit commentChanged(comment);
 	}
 
-	void setAutoTxInterval(unsigned int interval)
+	void setAutoTxInterval(uint interval)
 	{
 		m_settings->setValue("AutoTxInterval", interval);
 		emit autoTxIntervalChanged(interval);
 	}
 
+	void setVoxToneDuration(uint milliseconds)
+	{
+		m_settings->setValue("VoxToneDuration", milliseconds);
+		emit voxToneDurationChanged(milliseconds);
+	}
+
+	void setTailFlags(uint flags)
+	{
+		m_settings->setValue("TailFlags", flags);
+		emit tailFlagsChanged(flags);
+	}
+
 signals:
 	void userCallChanged(const QString &newCall);
 	void commentChanged(const QString &newComment);
-	void autoTxIntervalChanged(unsigned int interval);
+	void autoTxIntervalChanged(uint interval);
+	void voxToneDurationChanged(uint milliseconds);
+	void tailFlagsChanged(uint flags);
 };
 
 #endif // SETTINGS_H

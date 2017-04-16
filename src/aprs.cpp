@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <locale.h>
+
 #include "aprs.h"
 
 // PRIVATE FUNCTIONS
@@ -159,12 +161,18 @@ void APRS::update_pos_time(float lat, float lon, float alt_m, time_t t)
 	// generate time string from timestamp
 	gmtime_r(&t, &tms);
 
+	// make sure decimals are separated by '.'
+	setlocale(LC_ALL, "C");
+
 	sprintf((char*)m_info, "/%02i%02i%02iz%02i%05.2f%c/%03i%05.2f%c%c%s /a=%06i",
 		 	tms.tm_mday, tms.tm_hour, tms.tm_min,
 			lat_deg, lat_min, lat_ns,
 			lon_deg, lon_min, lon_ew,
 			(char)m_icon, m_comment,
 			(int)alt_ft);
+
+	// back to internationality
+	setlocale(LC_ALL, "");
 }
 
 void APRS::set_icon(enum APRS_ICON icon)
