@@ -11,6 +11,7 @@ public:
 
 	enum APRS_ICON {
 		AI_X = 0,
+		AI_JOGGER,
 		AI_BIKE,
 		AI_CAR,
 		AI_JEEP,

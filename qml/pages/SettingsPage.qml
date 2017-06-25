@@ -42,7 +42,10 @@ Dialog {
 		settings.userCall = userCall.text;
 		settings.userSSID = userSSID.text;
 		settings.comment = comment.text;
-		settings.autoTxInterval = autoTxInterval.text;
+        settings.autoTxIntervalMin = autoTxIntervalMin.text;
+        settings.autoTxIntervalForced = autoTxIntervalForced.text;
+        settings.autoTxDistance = autoTxDistance.text;
+        settings.autoTxHeadingChange = autoTxHeadingChange.text;
 		settings.voxToneDuration = voxTone.text;
 		settings.tailFlags = tailFlags.text;
 		settings.iconIndex = icon.currentIndex
@@ -91,6 +94,7 @@ Dialog {
 				menu: ContextMenu {
 					/* Keep this list in sync with aprs.h! */
 					MenuItem { text: qsTr("X") }
+					MenuItem { text: qsTr("Jogger") }
 					MenuItem { text: qsTr("Bicycle") }
 					MenuItem { text: qsTr("Car") }
 					MenuItem { text: qsTr("Jeep") }
@@ -120,14 +124,44 @@ Dialog {
 			}
 
 			TextField {
-				id: autoTxInterval
+                id: autoTxIntervalMin
 				width: parent.width
-				text: settings.autoTxInterval
-				label: qsTr("Auto TX interval (seconds)")
+                text: settings.autoTxIntervalMin
+                label: qsTr("Auto TX: min. interval (seconds)")
 				inputMethodHints: Qt.ImhDigitsOnly
 				placeholderText: label
 				validator: IntValidator {bottom: 1}
 			}
+
+            TextField {
+                id: autoTxIntervalForced
+                width: parent.width
+                text: settings.autoTxIntervalForced
+                label: qsTr("Auto TX: forced interval (seconds)")
+                inputMethodHints: Qt.ImhDigitsOnly
+                placeholderText: label
+                validator: IntValidator {bottom: 1}
+            }
+
+            TextField {
+                id: autoTxDistance
+                width: parent.width
+                text: settings.autoTxDistance
+                label: qsTr("Auto TX: distance (meters)")
+                inputMethodHints: Qt.ImhDigitsOnly
+                placeholderText: label
+                validator: IntValidator {bottom: 1}
+            }
+
+            TextField {
+                id: autoTxHeadingChange
+                width: parent.width
+                text: settings.autoTxHeadingChange
+                label: qsTr("Auto TX: heading change (degrees)")
+                inputMethodHints: Qt.ImhDigitsOnly
+                placeholderText: label
+                validator: IntValidator {bottom: 1}
+            }
 
 			SectionHeader {
 				text: qsTr("Modulation")

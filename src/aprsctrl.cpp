@@ -9,7 +9,7 @@
 APRSCtrl::APRSCtrl(QObject *parent)
 	: QObject(parent),
 		m_txState(APRSCtrl::Disabled),
-		m_latitude(42.086), m_longitude(23.456), m_altitude(333.25)
+		m_latitude(42.086), m_longitude(23.456), m_altitude(333.25), m_distance(0.0), m_headingChange(0.0)
 {
 	m_aprs = new APRS();
 	m_afsk = new AFSKMod(APRS_AFSK_SAMPLE_RATE);
@@ -28,11 +28,13 @@ APRSCtrl::APRSCtrl(QObject *parent)
 		m_positionSource->startUpdates();
 	}
 
+	m_lastTxPositionInfo.setCoordinate(QGeoCoordinate(0,0,0));
+	m_lastTxPositionInfo.setAttribute(QGeoPositionInfo::Direction, 0);
+
 	connect(&(Settings::instance()), SIGNAL(userCallChanged(QString)), this, SLOT(updateUserCall(QString)));
 	connect(&(Settings::instance()), SIGNAL(userSSIDChanged(uint)), this, SLOT(updateUserSSID(uint)));
 	connect(&(Settings::instance()), SIGNAL(commentChanged(QString)), this, SLOT(updateComment(QString)));
 	connect(&(Settings::instance()), SIGNAL(iconIndexChanged(uint)), this, SLOT(updateIconIndex(uint)));
-	connect(&(Settings::instance()), SIGNAL(autoTxIntervalChanged(uint)), this, SLOT(set_seconds_to_auto_tx(uint)));
 
 	m_aprs->set_source(Settings::instance().getUserCall().toUtf8().data(), Settings::instance().getUserSSID());
 	m_aprs->set_dest("GPS", 0);
@@ -78,10 +80,20 @@ APRSCtrl::~APRSCtrl()
 	delete m_afsk;
 }
 
+unsigned int APRSCtrl::get_seconds_to_auto_tx()
+{
+	if(m_txState == WaitingTriggered) {
+		return m_nextTxMin - time(NULL);
+	} else {
+		return m_nextTxForced - time(NULL);
+	}
+}
+
 void APRSCtrl::auto_tx_start(void)
 {
-	m_nextTx = time(NULL) + Settings::instance().getAutoTxInterval();
-	emit seconds_to_auto_tx_changed(m_nextTx - time(NULL));
+	m_nextTxMin = time(NULL) + Settings::instance().getAutoTxIntervalMin();
+	m_nextTxForced = time(NULL) + Settings::instance().getAutoTxIntervalForced();
+	emit seconds_to_auto_tx_changed(m_nextTxForced - time(NULL));
 
 	set_tx_state(Waiting);
 	m_autoTxTimer->start();
@@ -95,9 +107,24 @@ void APRSCtrl::auto_tx_stop(void)
 
 void APRSCtrl::auto_tx_tick()
 {
-	emit seconds_to_auto_tx_changed(m_nextTx - time(NULL));
+	// check distance
+	if(m_distance > Settings::instance().getAutoTxDistance()) {
+		set_tx_state(WaitingTriggered);
+	}
 
-	if(m_txState == Waiting && time(NULL) > m_nextTx) {
+	// check heading
+	if(fabs(m_headingChange) > Settings::instance().getAutoTxHeadingChange()) {
+		set_tx_state(WaitingTriggered);
+	}
+
+	if(m_txState == Waiting) {
+		emit seconds_to_auto_tx_changed(m_nextTxForced - time(NULL));
+	} else if(m_txState == WaitingTriggered) {
+		emit seconds_to_auto_tx_changed(m_nextTxMin - time(NULL));
+	}
+
+	if((m_txState == Waiting && time(NULL) > m_nextTxForced) ||
+			(m_txState == WaitingTriggered && time(NULL) > m_nextTxMin)) {
 		transmit_packet();
 	}
 }
@@ -111,8 +138,9 @@ void APRSCtrl::audio_state_changed(QAudio::State state)
 
 	case QAudio::StoppedState:
 		if(m_autoTxTimer->isActive()) {
-			m_nextTx = time(NULL) + Settings::instance().getAutoTxInterval();
-			emit seconds_to_auto_tx_changed(m_nextTx - time(NULL));
+			m_nextTxForced = time(NULL) + Settings::instance().getAutoTxIntervalForced();
+			m_nextTxMin = time(NULL) + Settings::instance().getAutoTxIntervalMin();
+			emit seconds_to_auto_tx_changed(m_nextTxForced - time(NULL));
 			set_tx_state(Waiting);
 		} else {
 			set_tx_state(Disabled);
@@ -149,19 +177,19 @@ void APRSCtrl::transmit_packet(void)
 
 		voxToneDurationMs -= 100;
 
-		qDebug() << "VOX: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
+		//qDebug() << "VOX: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
 	}
 
 	numSamples = m_afsk->gen_vox_tone(voxToneDurationMs, tmpSamples);
 	sampleStorage.append((const char*)tmpSamples, numSamples*sizeof(int16_t));
 
-	qDebug() << "VOX: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
+	//qDebug() << "VOX: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
 
 	// generate leading Flag
 	numSamples = m_afsk->mod_byte(0x7E, tmpSamples, 0);
 	sampleStorage.append((const char*)tmpSamples, numSamples*sizeof(int16_t));
 
-	qDebug() << "Flag: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
+	//qDebug() << "Flag: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
 
 	// generate the frame data...
 	aprsFrameLen = m_aprs->build_frame(aprsFrame);
@@ -171,7 +199,7 @@ void APRSCtrl::transmit_packet(void)
 		numSamples = m_afsk->mod_byte(aprsFrame[i], tmpSamples, 1);
 		sampleStorage.append((const char*)tmpSamples, numSamples*sizeof(int16_t));
 
-		qDebug() << "Data: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
+		//qDebug() << "Data: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
 	}
 
 	// generate tail flags, at least 1
@@ -179,7 +207,7 @@ void APRSCtrl::transmit_packet(void)
 		numSamples = m_afsk->mod_byte(0x7E, tmpSamples, 0);
 		sampleStorage.append((const char*)tmpSamples, numSamples*sizeof(int16_t));
 
-		qDebug() << "Flag: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
+		//qDebug() << "Flag: Generated " << numSamples << " samples (" << sampleStorage.size() << " total)";
 	}
 
 	// add some zero samples to make the end of the transmission stable
@@ -193,6 +221,8 @@ void APRSCtrl::transmit_packet(void)
 
 	m_audioOutput->start(m_sampleIO);
 	set_tx_state(Transmitting);
+
+    m_lastTxPositionInfo = m_currentPositionInfo;
 }
 
 void APRSCtrl::positionUpdated(const QGeoPositionInfo &posInfo)
@@ -206,7 +236,35 @@ void APRSCtrl::positionUpdated(const QGeoPositionInfo &posInfo)
 	emit longitudeChanged(m_longitude);
 	emit altitudeChanged(m_altitude);
 
+	if(posInfo.hasAttribute(QGeoPositionInfo::Direction) &&
+			m_lastTxPositionInfo.hasAttribute(QGeoPositionInfo::Direction)) {
+		qreal curHeading = posInfo.attribute(QGeoPositionInfo::Direction);
+		qreal oldHeading = m_lastTxPositionInfo.attribute(QGeoPositionInfo::Direction);
+
+		qDebug() << "Old heading = " << oldHeading << " new heading = " << curHeading;
+
+		qreal diff = curHeading - oldHeading;
+
+		if(diff < -180) {
+			diff += 360;
+		} else if(diff > 180) {
+			diff -= 360;
+		}
+
+		m_headingChange = diff;
+	} else {
+		qDebug() << "Heading change cannot be calculated due to missing attributes";
+		m_headingChange = 0;
+	}
+
+	emit headingChangeChanged(m_headingChange);
+
+	m_distance = m_currentPositionInfo.coordinate().distanceTo(m_lastTxPositionInfo.coordinate());
+	emit distanceChanged(m_distance);
+
 	m_aprs->update_pos_time(m_latitude, m_longitude, m_altitude, time(NULL));
+
+	m_currentPositionInfo = posInfo;
 }
 
 void APRSCtrl::updateUserCall(const QString &call)

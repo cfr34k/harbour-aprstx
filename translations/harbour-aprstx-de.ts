@@ -66,6 +66,26 @@
         <source>Enable automatic transmitter</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Next transmission forced in </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transmission delayed for </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Distance: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heading change: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SettingsPage</name>
@@ -95,10 +115,6 @@
     </message>
     <message>
         <source>Operation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto TX interval (seconds)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -167,6 +183,26 @@
     </message>
     <message>
         <source>Ship</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Jogger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto TX: min. interval (seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto TX: forced interval (seconds)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto TX: distance (meters)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto TX: heading change (degrees)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

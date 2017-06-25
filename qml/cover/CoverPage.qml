@@ -46,6 +46,9 @@ CoverBackground {
 		case APRSCtrlTypes.Waiting:
 			return qsTr("Waiting (" + secondsToTx + " s)");
 
+        case APRSCtrlTypes.WaitingTriggered:
+            return qsTr("Triggered (" + secondsToTx + " s)");
+
 		default:
 			return qsTr("Unknown");
 		}

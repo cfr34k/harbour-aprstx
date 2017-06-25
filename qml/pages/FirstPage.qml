@@ -46,7 +46,10 @@ Page {
 			return qsTr("Transmitting");
 
 		case APRSCtrlTypes.Waiting:
-			return qsTr("Waiting for next transmission (" + secondsToTx + " s)");
+            return qsTr("Next transmission forced in ") + secondsToTx + qsTr(" s");
+
+        case APRSCtrlTypes.WaitingTriggered:
+            return qsTr("Transmission delayed for ") + secondsToTx + qsTr(" s");
 
 		default:
 			return qsTr("Unknown state");
@@ -154,6 +157,22 @@ Page {
 				anchors.right: parent.right
 				anchors.rightMargin: Theme.paddingLarge
 				text: qsTr('Altitude: ') + '<b>' + aprsctrl.altitude + ' m</b>'
+			}
+
+            Label {
+                id: distanceLabel
+                font.pixelSize: Theme.fontSizeLarge
+                anchors.right: parent.right
+                anchors.rightMargin: Theme.paddingLarge
+                text: qsTr('Distance: ') + '<b>' + aprsctrl.distance.toFixed(1) + ' m</b>'
+            }
+
+            Label {
+                id: headingChangeLabel
+				font.pixelSize: Theme.fontSizeLarge
+				anchors.right: parent.right
+				anchors.rightMargin: Theme.paddingLarge
+                text: qsTr('Heading change: ') + '<b>' + aprsctrl.headingChange.toFixed(1) + ' °</b>'
 			}
 
 			SectionHeader {

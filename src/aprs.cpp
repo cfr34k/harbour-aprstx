@@ -8,6 +8,7 @@
 
 const struct APRS::APRS_ICON_DATA APRS::ICON_DATA[APRS_NUM_ICONS] = {
 	{ '.' }, // AI_X
+	{ '[' }, // AI_JOGGER
 	{ 'b' }, // AI_BIKE
 	{ '>' }, // AI_CAR
 	{ 'j' }, // AI_JEEP
