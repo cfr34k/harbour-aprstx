@@ -30,6 +30,18 @@
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Waiting (</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Triggered (</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FirstPage</name>

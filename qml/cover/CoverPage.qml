@@ -44,10 +44,10 @@ CoverBackground {
 			return qsTr("Transmitting");
 
 		case APRSCtrlTypes.Waiting:
-			return qsTr("Waiting (" + secondsToTx + " s)");
+			return qsTr("Waiting (") + secondsToTx + qsTr(" s)");
 
         case APRSCtrlTypes.WaitingTriggered:
-            return qsTr("Triggered (" + secondsToTx + " s)");
+			return qsTr("Triggered (") + secondsToTx + qsTr(" s)");
 
 		default:
 			return qsTr("Unknown");

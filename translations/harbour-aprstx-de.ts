@@ -30,6 +30,18 @@
         <source>Unknown</source>
         <translation>Unbekannt</translation>
     </message>
+    <message>
+        <source>Waiting (</source>
+        <translation>Warte (</translation>
+    </message>
+    <message>
+        <source> s)</source>
+        <translation> s)</translation>
+    </message>
+    <message>
+        <source>Triggered (</source>
+        <translation>Ausgelöst (</translation>
+    </message>
 </context>
 <context>
     <name>FirstPage</name>
