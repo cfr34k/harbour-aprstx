@@ -157,7 +157,7 @@ Dialog {
                 id: autoTxHeadingChange
                 width: parent.width
                 text: settings.autoTxHeadingChange
-                label: qsTr("Auto TX: heading change (degrees)")
+                label: qsTr("Auto TX: heading change (±180 degrees)")
                 inputMethodHints: Qt.ImhDigitsOnly
                 placeholderText: label
                 validator: IntValidator {bottom: 1}

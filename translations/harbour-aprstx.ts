@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>AboutPage</name>
+    <message>
+        <source>About APRSTX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author: Thomas Kolb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Project on Github</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Disabled</source>
@@ -84,6 +99,10 @@
     </message>
     <message>
         <source>Heading change: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -202,7 +221,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Auto TX: heading change (degrees)</source>
+        <source>Auto TX: heading change (±180 degrees)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

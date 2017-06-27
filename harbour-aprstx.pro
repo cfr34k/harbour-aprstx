@@ -45,7 +45,8 @@ CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-aprstx-de.ts
 
 DISTFILES += \
-    qml/pages/SettingsPage.qml
+    qml/pages/SettingsPage.qml \
+    qml/pages/AboutPage.qml
 
 HEADERS += \
     src/settings.h \
