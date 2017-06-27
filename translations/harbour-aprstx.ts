@@ -12,7 +12,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Project on Github</source>
+        <source>Visit Project on Github</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

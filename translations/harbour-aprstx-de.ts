@@ -1,228 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.0" language="de_DE">
 <context>
     <name>AboutPage</name>
     <message>
         <source>About APRSTX</source>
-        <translation type="unfinished"></translation>
+        <translation>Über APRSTX</translation>
     </message>
     <message>
         <source>Author: Thomas Kolb</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor: Thomas Kolb</translation>
     </message>
     <message>
-        <source>Project on Github</source>
-        <translation type="unfinished"></translation>
+        <source>Visit Project on Github</source>
+        <translation>Besuche das Github-Projekt</translation>
     </message>
 </context>
 <context>
     <name>CoverPage</name>
     <message>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Deaktiviert</translation>
     </message>
     <message>
         <source>Transmitting</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendet</translation>
     </message>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannt</translation>
     </message>
 </context>
 <context>
     <name>FirstPage</name>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>APRS Transmitter</source>
-        <translation type="unfinished"></translation>
+        <translation>APRS-Sender</translation>
     </message>
     <message>
         <source>Transmitter Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Senderstatus</translation>
     </message>
     <message>
         <source>Transmitter Control</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendersteuerung</translation>
     </message>
     <message>
         <source>Latitude: </source>
-        <translation type="unfinished"></translation>
+        <translation>Breitengrad: </translation>
     </message>
     <message>
         <source>Longitude: </source>
-        <translation type="unfinished"></translation>
+        <translation>Längengrad: </translation>
     </message>
     <message>
         <source>Altitude: </source>
-        <translation type="unfinished"></translation>
+        <translation>Höhe: </translation>
     </message>
     <message>
         <source>Transmit now!</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt senden!</translation>
     </message>
     <message>
         <source>Transmitter disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Sender deaktiviert</translation>
     </message>
     <message>
         <source>Transmitting</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendet</translation>
     </message>
     <message>
         <source>Unknown state</source>
-        <translation type="unfinished"></translation>
+        <translation>Unbekannter Zustand</translation>
     </message>
     <message>
         <source>Enable automatic transmitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch senden</translation>
     </message>
     <message>
         <source>Next transmission forced in </source>
-        <translation type="unfinished"></translation>
+        <translation>Nächstes Senden wird erzwungen in</translation>
     </message>
     <message>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> s</translation>
     </message>
     <message>
         <source>Transmission delayed for </source>
-        <translation type="unfinished"></translation>
+        <translation>Senden verzögert um</translation>
     </message>
     <message>
         <source>Distance: </source>
-        <translation type="unfinished"></translation>
+        <translation>Entfernung: </translation>
     </message>
     <message>
         <source>Heading change: </source>
-        <translation type="unfinished"></translation>
+        <translation>Richtungsänderung: </translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Über</translation>
     </message>
 </context>
 <context>
     <name>SettingsPage</name>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichern</translation>
     </message>
     <message>
         <source>APRS Fields</source>
-        <translation type="unfinished"></translation>
+        <translation>APRS-Datenfelder</translation>
     </message>
     <message>
         <source>Your call sign</source>
-        <translation type="unfinished"></translation>
+        <translation>Dein Rufzeichen</translation>
     </message>
     <message>
         <source>Source SSID (0-15, incl.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Quell-SSID (0-15)</translation>
     </message>
     <message>
         <source>Icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Symbol</translation>
     </message>
     <message>
         <source>APRS comment (max. 32 characters)</source>
-        <translation type="unfinished"></translation>
+        <translation>APRS-Kommentar (max. 32 Zeichen)</translation>
     </message>
     <message>
         <source>Operation</source>
-        <translation type="unfinished"></translation>
+        <translation>Funktion</translation>
     </message>
     <message>
         <source>Modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>Modulation</translation>
     </message>
     <message>
         <source>VOX tone duration (milliseconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Dauer des VOX-Tons (Millisekunden)</translation>
     </message>
     <message>
         <source>Tail flags (after end of packet)</source>
-        <translation type="unfinished"></translation>
+        <translation>Flags nach Paketende</translation>
     </message>
     <message>
         <source>X</source>
-        <translation type="unfinished"></translation>
+        <translation>X</translation>
     </message>
     <message>
         <source>Bicycle</source>
-        <translation type="unfinished"></translation>
+        <translation>Fahrrad</translation>
     </message>
     <message>
         <source>Car</source>
-        <translation type="unfinished"></translation>
+        <translation>PKW</translation>
     </message>
     <message>
         <source>Jeep</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeep</translation>
     </message>
     <message>
         <source>Van</source>
-        <translation type="unfinished"></translation>
+        <translation>Bus (Nutzfahrzeug)</translation>
     </message>
     <message>
         <source>Truck</source>
-        <translation type="unfinished"></translation>
+        <translation>LKW</translation>
     </message>
     <message>
         <source>Bus</source>
-        <translation type="unfinished"></translation>
+        <translation>Bus (Personentransport)</translation>
     </message>
     <message>
         <source>Balloon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ballon</translation>
     </message>
     <message>
         <source>Recreational Vehicle</source>
-        <translation type="unfinished"></translation>
+        <translation>Wohnmobil</translation>
     </message>
     <message>
         <source>Helicopter</source>
-        <translation type="unfinished"></translation>
+        <translation>Helikopter</translation>
     </message>
     <message>
         <source>Yacht</source>
-        <translation type="unfinished"></translation>
+        <translation>Yacht</translation>
     </message>
     <message>
         <source>Ambulance</source>
-        <translation type="unfinished"></translation>
+        <translation>Notarzt</translation>
     </message>
     <message>
         <source>Fire Truck</source>
-        <translation type="unfinished"></translation>
+        <translation>Feuerwehr</translation>
     </message>
     <message>
         <source>Ship</source>
-        <translation type="unfinished"></translation>
+        <translation>Schiff</translation>
     </message>
     <message>
         <source>Jogger</source>
-        <translation type="unfinished"></translation>
+        <translation>Läufer</translation>
     </message>
     <message>
         <source>Auto TX: min. interval (seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Autom. senden: Minimalintervall (Sekunden)</translation>
     </message>
     <message>
         <source>Auto TX: forced interval (seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Autom. senden: Erzwungenes Intervall (Sekunden)</translation>
     </message>
     <message>
         <source>Auto TX: distance (meters)</source>
-        <translation type="unfinished"></translation>
+        <translation>Autom. senden: Entfernung (Meter)</translation>
     </message>
     <message>
         <source>Auto TX: heading change (±180 degrees)</source>
-        <translation type="unfinished"></translation>
+        <translation>Autom. senden: Richtungsänderung (±180°)</translation>
     </message>
 </context>
 </TS>
