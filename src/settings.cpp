@@ -21,7 +21,7 @@
 Settings::Settings()
 	: QObject()
 {
-	m_settings = new QSettings("cfr34k", "APRSTX");
+	m_settings = new QSettings("harbour-aprstx", "APRSTX");
 }
 
 Settings::~Settings()
