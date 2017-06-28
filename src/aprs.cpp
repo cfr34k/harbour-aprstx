@@ -150,8 +150,17 @@ void APRS::update_info_field(void)
 	// make sure decimals are separated by '.'
 	setlocale(LC_ALL, "C");
 
+	/* Time as ddhhmm
 	sprintf((char*)m_info, "/%02i%02i%02iz%02i%05.2f%c/%03i%05.2f%c%c%s /a=%06i",
 			tms.tm_mday, tms.tm_hour, tms.tm_min,
+			lat_deg, lat_min, lat_ns,
+			lon_deg, lon_min, lon_ew,
+			ICON_DATA[m_icon].aprs_char, m_comment,
+			(int)alt_ft);
+	*/
+	// time as hhmmss
+	sprintf((char*)m_info, "/%02i%02i%02ih%02i%05.2f%c/%03i%05.2f%c%c%s /a=%06i",
+			tms.tm_hour, tms.tm_min, tms.tm_sec,
 			lat_deg, lat_min, lat_ns,
 			lon_deg, lon_min, lon_ew,
 			ICON_DATA[m_icon].aprs_char, m_comment,
