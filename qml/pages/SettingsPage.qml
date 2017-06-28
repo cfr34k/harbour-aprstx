@@ -39,6 +39,15 @@ Dialog {
 		settings.iconIndex = icon.currentIndex
 	}
 
+	canAccept: userCall.acceptableInput &&
+			   userSSID.acceptableInput &&
+			   autoTxIntervalMin.acceptableInput &&
+			   autoTxIntervalForced.acceptableInput &&
+			   autoTxDistance.acceptableInput &&
+			   autoTxHeadingChange.acceptableInput &&
+			   voxTone.acceptableInput &&
+			   tailFlags.acceptableInput
+
 	SilicaFlickable {
 		anchors.fill: parent
 		contentHeight: column.height
@@ -63,6 +72,7 @@ Dialog {
 				text: settings.userCall
 				label: qsTr("Your call sign")
 				placeholderText: label
+				validator: RegExpValidator {regExp: /^[a-zA-Z0-9]{1,6}$/}
 			}
 
 			TextField {
@@ -118,7 +128,7 @@ Dialog {
                 label: qsTr("Auto TX: min. interval (seconds)")
 				inputMethodHints: Qt.ImhDigitsOnly
 				placeholderText: label
-				validator: IntValidator {bottom: 1}
+				validator: IntValidator {bottom: 1; top: autoTxIntervalForced.text}
 			}
 
             TextField {
@@ -128,7 +138,7 @@ Dialog {
                 label: qsTr("Auto TX: forced interval (seconds)")
                 inputMethodHints: Qt.ImhDigitsOnly
                 placeholderText: label
-                validator: IntValidator {bottom: 1}
+				validator: IntValidator {bottom: autoTxIntervalMin.text}
             }
 
             TextField {

@@ -175,11 +175,12 @@ Page {
 				text: qsTr("Transmit now!")
 				onClicked: aprsctrl.transmit_packet()
 				anchors.horizontalCenter: parent.horizontalCenter
-				enabled: aprsctrl.txstate != APRSCtrlTypes.Transmitting
+				enabled: settings.userCall.length > 0 && aprsctrl.txstate != APRSCtrlTypes.Transmitting
 			}
 
 			TextSwitch {
 				text: qsTr("Enable automatic transmitter")
+				enabled: settings.userCall.length > 0
 				onCheckedChanged: { if(checked) { aprsctrl.auto_tx_start() } else { aprsctrl.auto_tx_stop() } }
 			}
 		}
